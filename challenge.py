@@ -1,7 +1,6 @@
 
 from bs4 import BeautifulSoup
 import requests
-from mako.template import Template
 from mako.lookup import TemplateLookup
 from datetime import datetime, timedelta
 from auth import strong_key
@@ -315,7 +314,38 @@ class challenge:
     class subproject:
         def __init__(self, name):
             self.name = name
-            self.__dict__.update(subprojects[self.name])
+            for key, value in subprojects[name].items():
+                setattr(self, key, value)
+        
+        @property
+        def cpu_time(self):
+            hms = self._cpu_time.split(':')
+            if int(hms[0]) == 0:
+                return f"{hms[1].strip('0')} minutes"
+            if int(hms[0]) < 48:
+                return f"{hms[0].strip('0')} hours"
+            if int(hms[0]) < 24*13:
+                return f"{int(hms[0])//24} days"
+            return f"{int(hms[0])//168} weeks"
+        
+        @cpu_time.setter
+        def cpu_time(self, value):
+            self._cpu_time = value
+                
+        @property
+        def gpu_time(self):
+            hms = self._gpu_time.split(':')
+            if int(hms[0]) == 0:
+                return f"{hms[1].strip('0')} minutes"
+            if int(hms[0]) < 48:
+                return f"{hms[0].strip('0')} hours"
+            if int(hms[0]) < 24*13:
+                return f"{int(hms[0])//24} days"
+            return f"{int(hms[0])//168} weeks"
+        
+        @gpu_time.setter
+        def gpu_time(self, value):
+            self._gpu_time = value
 
     def __init__(self, title, number, length, celebrating, sp, start_day, time, background):
         self.title = title
@@ -341,7 +371,7 @@ c = challenge(
 )
 
 if __name__ == '__main__':
-    tl = TemplateLookup(directories=[""])
+    tl = TemplateLookup(directories=["", "project_overviews/"])
     t = tl.get_template('challenge.mako')
     with open("wsw.txt", 'w') as f:
         print(t.render(), file=f)

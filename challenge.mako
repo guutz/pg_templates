@@ -44,8 +44,8 @@ mt_msgs = {
     'slow': 'Multi-threading is supported, but is [color=red]NOT[/color] recommended except for slower computers.',
     'no': 'Multi-threading is [color=red]NOT[/color] supported for this subproject.'
 }
-%> \
-[u][b]${mt_msgs[c.sp.multithread]}[/b][/u] [color=red](${c.sp.short_name} tasks on one CPU core will take ${c.sp.cpu_time}.)[/color]
+%>\
+[u][b]${mt_msgs[c.sp.multithread]}[/b][/u] [color=red](${c.sp.short_name} tasks on one CPU core take about ${c.sp.cpu_time} on average.)[/color]
 
 % if c.sp.multithread != 'no':
 Those looking to maximize ${'a very old' if c.sp.multithread == 'slow' else 'their'} computer's performance during this challenge, or when running${' Genefer and' if 'GFN' in c.sp.short_name else ''} LLR in general, may find this information useful.[list]
