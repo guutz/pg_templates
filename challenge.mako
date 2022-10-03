@@ -1,8 +1,6 @@
 <%!
-from datetime import datetime
-from challenge import c
+from challenge import time
 %>\
-<%def name="time(s)">${datetime.now().strftime(s)}</%def>\
 ######################### BEGIN TEMPLATE
 [b][size=18]Welcome to ${c.title} Challenge[/size][/b]
 
@@ -65,3 +63,5 @@ Those looking to maximize ${'a very old' if c.sp.multithread == 'slow' else 'the
 % if c.sp.llr2:
 <%include file="what_is_llr2.mako"/>
 % endif
+
+

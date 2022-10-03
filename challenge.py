@@ -1,9 +1,9 @@
-
+import argparse
 from bs4 import BeautifulSoup
 import requests
-from mako.lookup import TemplateLookup
+from mako.lookup import TemplateLookup as MakoTemplateLookup
 from datetime import datetime, timedelta
-from auth import strong_key
+import yaml
 
 YES = 'yes'
 NO = 'no'
@@ -12,22 +12,8 @@ YES_APP = 'yes_app'
 CPU = 'CPU'
 GPU = 'GPU'
 
-url = 'https://www.primegrid.com/prefs_edit.php?subset=project&cols=1'
-cookies = {'auth': strong_key}
-r = requests.get(url, cookies=cookies)
-soup = BeautifulSoup(r.content, 'html.parser')
-notes = soup.find_all("div", class_="note")
-
-def request_avg_time(sp: str, type=CPU):
-    global notes
-    timestr = ''
-    for note in notes:
-        project = note.parent.find("a")
-        if project and sp in project.text:
-            timestr = note.find(string=lambda text: text and f"Recent average {type} time" in text)
-    if timestr:
-        return timestr.strip()[len(f"Recent average {type} time: "):]
-    return None
+def time(s):
+    return datetime.now().strftime(s)
 
 subprojects = {
     '321': {
@@ -37,8 +23,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('321'),
-        'gpu_time': None,
         'deadline': 6,
     },
     'CUL': {
@@ -48,8 +32,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('CUL'),
-        'gpu_time': None,
         'deadline': 14,
     },
     'ESP': {
@@ -59,8 +41,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('ESP'),
-        'gpu_time': None,
         'deadline': 6,
     },
     'GCW': {
@@ -70,8 +50,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('GCW'),
-        'gpu_time': None,
         'deadline': 10,
     },
     'PSP': {
@@ -81,8 +59,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('PSP'),
-        'gpu_time': None,
         'deadline': 21,
     },
     'PPS': {
@@ -92,8 +68,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': SLOW,
-        'cpu_time': request_avg_time('PPS'),
-        'gpu_time': None,
         'deadline': 4,
     },
     'PPSE': {
@@ -103,8 +77,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': SLOW,
-        'cpu_time': request_avg_time('PPSE'),
-        'gpu_time': None,
         'deadline': 4,
     },
     'MEGA': {
@@ -114,8 +86,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('MEGA'),
-        'gpu_time': None,
         'deadline': 4,
     },
     'SOB': {
@@ -125,8 +95,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('SOB'),
-        'gpu_time': None,
         'deadline': 35,
     },
     'SR5': {
@@ -136,8 +104,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('SR5'),
-        'gpu_time': None,
         'deadline': 6,
     },
     'SGS': {
@@ -147,8 +113,6 @@ subprojects = {
         'llr': True,
         'llr2': False,
         'multithread': SLOW,
-        'cpu_time': request_avg_time('SGS'),
-        'gpu_time': None,
         'deadline': 4,
     },
     'TRP': {
@@ -158,8 +122,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('TRP'),
-        'gpu_time': None,
         'deadline': 6,
     },
     'WOO': {
@@ -169,8 +131,6 @@ subprojects = {
         'llr': True,
         'llr2': True,
         'multithread': YES,
-        'cpu_time': request_avg_time('WOO'),
-        'gpu_time': None,
         'deadline': 14, 
     },
     'AP27': {
@@ -180,8 +140,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('AP27'),
-        'gpu_time': request_avg_time('AP27', type=GPU),
         'deadline': 7,
     },
     'WW': {
@@ -191,8 +149,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('WW'),
-        'gpu_time': request_avg_time('WW', type=GPU),
         'deadline': 7,
     },
     'GFN-15': {
@@ -202,8 +158,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': NO,
-        'cpu_time': None,
-        'gpu_time': request_avg_time('GFN-15', type=GPU),
         'deadline': 4,
     },
     'GFN-16': {
@@ -213,8 +167,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('GFN-16'),
-        'gpu_time': request_avg_time('GFN-16', type=GPU),
         'deadline': 4,
     },
     'GFN-17': {
@@ -224,8 +176,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('GFN-17'),
-        'gpu_time': request_avg_time('GFN-17', type=GPU),
         'deadline': 4,
     },
     'GFN-18': {
@@ -235,8 +185,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('GFN-18'),
-        'gpu_time': request_avg_time('GFN-18', type=GPU),
         'deadline': 4,
     },
     'GFN-19': {
@@ -246,8 +194,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('GFN-19'),
-        'gpu_time': request_avg_time('GFN-19', type=GPU),
         'deadline': 10,
     },
     'GFN-20': {
@@ -257,8 +203,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES,
-        'cpu_time': request_avg_time('GFN-20'),
-        'gpu_time': request_avg_time('GFN-20', type=GPU),
         'deadline': 15,
     },
     'GFN-21': {
@@ -268,8 +212,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': YES_APP,
-        'cpu_time': request_avg_time('GFN-21'),
-        'gpu_time': request_avg_time('GFN-21', type=GPU),
         'deadline': 21,
     },
     'GFN-22': {
@@ -279,8 +221,6 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': NO,
-        'cpu_time': None,
-        'gpu_time': request_avg_time('GFN-22', type=GPU),
         'deadline': 21,
     },
     'GFN-DYFL': {
@@ -290,12 +230,9 @@ subprojects = {
         'llr': False,
         'llr2': False,
         'multithread': NO,
-        'cpu_time': None,
-        'gpu_time': request_avg_time('Lucky?', type=GPU),
         'deadline': 21,
     },
 }
-
 
 class challenge:
 
@@ -319,7 +256,7 @@ class challenge:
         
         @property
         def cpu_time(self):
-            hms = self._cpu_time.split(':')
+            hms = self.get_time(CPU).split(':')
             if int(hms[0]) == 0:
                 return f"{hms[1].strip('0')} minutes"
             if int(hms[0]) < 48:
@@ -327,14 +264,10 @@ class challenge:
             if int(hms[0]) < 24*13:
                 return f"{int(hms[0])//24} days"
             return f"{int(hms[0])//168} weeks"
-        
-        @cpu_time.setter
-        def cpu_time(self, value):
-            self._cpu_time = value
                 
         @property
         def gpu_time(self):
-            hms = self._gpu_time.split(':')
+            hms = self.get_time(GPU).split(':')
             if int(hms[0]) == 0:
                 return f"{hms[1].strip('0')} minutes"
             if int(hms[0]) < 48:
@@ -342,36 +275,158 @@ class challenge:
             if int(hms[0]) < 24*13:
                 return f"{int(hms[0])//24} days"
             return f"{int(hms[0])//168} weeks"
-        
-        @gpu_time.setter
-        def gpu_time(self, value):
-            self._gpu_time = value
 
-    def __init__(self, title, number, length, celebrating, sp, start_day, time, background):
-        self.title = title
+        def _get_prefs_page(self):     
+            from auth import strong_key
+            url = 'https://www.primegrid.com/prefs_edit.php?subset=project&cols=1'
+            cookies = {'auth': strong_key}
+            r = requests.get(url, cookies=cookies)
+            soup = BeautifulSoup(r.content, 'html.parser')
+            self._prefs_page = soup
+        
+        def get_time(self, type=CPU):
+            if not hasattr(self, '_prefs_page'):
+                self._get_prefs_page()
+            notes = self._prefs_page.find_all("div", class_="note")
+            timestr = ''
+            for note in notes:
+                project = note.parent.find("a")
+                if project and self.name in project.text:
+                    timestr = note.find(string=lambda text: text and f"Recent average {type} time" in text)
+            if timestr:
+                return timestr.strip()[len(f"Recent average {type} time: "):]
+            return None
+            
+
+    def __init__(self, title, number, length, celebrating, sp, start_date, background, thread=None):
+        self.title = title if "'s" in title else "the "+title
         self.number = self.ths[number]
         self.length = length
         self.celebrating = celebrating
         self.sp = self.subproject(sp)
-        self._start_time_object = datetime.strptime(start_day+' '+time, '%m/%d %H:%M')
+        self._start_time_object = datetime.strptime(start_date, '%m/%d %H:%M')
         self._end_time_object = self._start_time_object + timedelta(days=self.length)
         self.start = self._start_time_object.strftime('%d %B %H:%M UTC')
         self.end = self._end_time_object.strftime('%d %B %H:%M UTC')
         self.background = background
+        self.thread = thread
 
-c = challenge(
-    'the World Space Week',
-    6,
-    7,
-    'in celebration of world space week!',
-    'TRP',
-    '10/4',
-    '12:00',
-    'It\'s World Space Week!'
-)
+    def _get_users_page(self):
+        url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number}/top_users.html'
+        r1 = requests.get(url)
+        soup = BeautifulSoup(r1.content, 'html.parser')
+        self._users_page = soup
+    
+    def _get_teams_page(self):
+        url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number}/top_teams.html'
+        r1 = requests.get(url)
+        soup = BeautifulSoup(r1.content, 'html.parser')
+        self._teams_page = soup
 
+    @property
+    def total_tasks_done(self):
+        if not hasattr(self, '_users_page'):
+            self._get_users_page()
+        table = self._users_page.find('table')
+        rows = table.find_all('tr')
+        sum = 0
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele.text.strip() for ele in cols]
+            if len(cols) > 0:
+                sum += int(cols[4].replace('\u202f', ''))
+        return sum
+
+    @property
+    def top_3_users(self):
+        if not hasattr(self, '_users_page'):
+            self._get_users_page()
+        table = self._users_page.find('table')
+        rows = table.find_all('tr')
+        users = []
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele for ele in cols if cols[0].text.strip() in ['1', '2', '3']]
+            if cols:
+                users.append(("https://primegrid.com"+cols[1].a['href'], cols[1].a.text.strip(), cols[4].text.strip().replace('\u202f', ',')))
+        return users
+
+    @property
+    def top_3_teams(self):
+        if not hasattr(self, '_teams_page'):
+            self._get_teams_page()
+        table = self._teams_page.find('table')
+        rows = table.find_all('tr')
+        teams = []
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele for ele in cols if cols[0].text.strip() in ['1', '2', '3']]
+            if cols:
+                teams.append(("https://primegrid.com"+cols[1].a['href'], cols[1].a.text.strip(), cols[4].text.strip().replace('\u202f', ',')))
+        return teams
+
+    @property
+    def total_users(self):
+        if not hasattr(self, '_users_page'):
+            self._get_users_page()
+        table = self._users_page.find('table')
+        rows = table.find_all('tr')
+        return len(rows)-1
+
+    @property
+    def total_teams(self):
+        if not hasattr(self, '_teams_page'):
+            self._get_teams_page()
+        table = self._teams_page.find('table')
+        rows = table.find_all('tr')
+        return len(rows)-1
+
+def init_template(file):
+    with open(file+'.yml', 'w+', encoding="utf-8") as f:
+        f.write("""\
+title: 
+number: 
+length: 
+celebrating: 
+sp: 
+start_date: 
+background: >-
+
+thread: 
+        """)
+
+# I'm very sorry, i've used "template" for both the mako one and for the yaml file where you fill in the challenge info
 if __name__ == '__main__':
-    tl = TemplateLookup(directories=["", "project_overviews/"])
-    t = tl.get_template('challenge.mako')
-    with open("wsw.txt", 'w') as f:
-        print(t.render(), file=f)
+    argparser = argparse.ArgumentParser()
+    argparser.add_argument('-i', '--init', default=None, help='initialize template')
+    argparser.add_argument('-t', '--template', default=None, help='use template')
+    argparser.add_argument('-o', '--outfile', default=None, help='output file')
+    argparser.add_argument('-g', '--generate', nargs='+', default=['firstpost','fullpost','newspost'], help='generate posts')
+    args = argparser.parse_args()
+    args = vars(args)
+    if args['init']:
+        init_template(args['init'])
+        exit()
+    elif args['template']:
+        with open(args['template'], 'r', encoding="utf-8") as f:
+            y = yaml.safe_load(f)
+            c = challenge(**y)
+    else:
+        argparser.print_help()
+        exit()
+    if args['outfile']:
+        outfile = args['outfile']
+    else:
+        outfile = args['template'].split('.')[0] + '.txt'
+    mtl = MakoTemplateLookup(directories=["", "project_overviews/"])
+    makotemplates = {
+        'firstpost': mtl.get_template('firstpost.mako'),
+        'fullpost': mtl.get_template('challenge.mako'),
+        'newspost': mtl.get_template('newspost.mako'),
+        'endpost': mtl.get_template('results_are_final.mako'),
+    }
+    
+    for post in args['generate']:
+        file = outfile.split('.')[0] + '_' + post + ('.txt' if len(outfile.split('.')) == 1 else '.' + outfile.split('.')[1])
+        with open(file, 'w+', encoding="utf-8") as f:
+            print(makotemplates[post].render(c=c),file=f)
