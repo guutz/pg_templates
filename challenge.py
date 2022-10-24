@@ -12,227 +12,83 @@ YES_APP = 'yes_app'
 CPU = 'CPU'
 GPU = 'GPU'
 
+subprojects = yaml.safe_load(open('subprojects.yaml', 'r', encoding="utf-8"))
+
 def time(s):
     return datetime.now().strftime(s)
 
-subprojects = {
-    '321': {
-        'short_name' : '321-LLR',
-        'long_name' : '321 Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=7945',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 6,
-    },
-    'CUL': {
-        'short_name' : 'CUL-LLR',
-        'long_name' : 'Cullen Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=7944',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 14,
-    },
-    'ESP': {
-        'short_name' : 'ESP-LLR',
-        'long_name' : 'Extended Sierpinski Problem (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=5758',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 6,
-    },
-    'GCW': {
-        'short_name' : 'GCW-LLR',
-        'long_name' : 'Generalized Cullen/Woodall Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=7073',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 10,
-    },
-    'PSP': {
-        'short_name' : 'PSP-LLR',
-        'long_name' : 'Prime Sierpinski Problem (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=972',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 21,
-    },
-    'PPS': {
-        'short_name' : 'PPS-LLR',
-        'long_name' : 'Proth Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=2665',
-        'llr': True,
-        'llr2': True,
-        'multithread': SLOW,
-        'deadline': 4,
-    },
-    'PPSE': {
-        'short_name' : 'PPSE-LLR',
-        'long_name' : 'Proth Prime Search Extended (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=2665',
-        'llr': True,
-        'llr2': True,
-        'multithread': SLOW,
-        'deadline': 4,
-    },
-    'MEGA': {
-        'short_name' : 'PPS-MEGA',
-        'long_name' : 'Proth Mega Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=2665',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 4,
-    },
-    'SOB': {
-        'short_name' : 'SOB-LLR',
-        'long_name' : 'Seventeen or Bust (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=1647',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 35,
-    },
-    'SR5': {
-        'short_name' : 'SR5-LLR',
-        'long_name' : 'Siepinski/Riesel Base 5 Problem (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=5087',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 6,
-    },
-    'SGS': {
-        'short_name' : 'SGS-LLR',
-        'long_name' : 'Sophie Germain Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=1450',
-        'llr': True,
-        'llr2': False,
-        'multithread': SLOW,
-        'deadline': 4,
-    },
-    'TRP': {
-        'short_name' : 'TRP-LLR',
-        'long_name' : 'The Riesel Problem (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=1731',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 6,
-    },
-    'WOO': {
-        'short_name' : 'WOO-LLR',
-        'long_name' : 'Woodall Prime Search (LLR)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=7944',
-        'llr': True,
-        'llr2': True,
-        'multithread': YES,
-        'deadline': 14, 
-    },
-    'AP27': {
-        'short_name' : 'AP27',
-        'long_name' : 'Arithmetic Progression of Primes 27',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=7022',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 7,
-    },
-    'WW': {
-        'short_name' : 'WW',
-        'long_name' : 'Wieferich and Wall-Sun-Sun Prime Search',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=9436',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 7,
-    },
-    'GFN-15': {
-        'short_name' : 'GFN-15',
-        'long_name' : 'Generalized Fermat Prime Search (n=15)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': NO,
-        'deadline': 4,
-    },
-    'GFN-16': {
-        'short_name' : 'GFN-16',
-        'long_name' : 'Generalized Fermat Prime Search (n=16)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 4,
-    },
-    'GFN-17': {
-        'short_name' : 'GFN-17',
-        'long_name' : 'Generalized Fermat Prime Search (n=17)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 4,
-    },
-    'GFN-18': {
-        'short_name' : 'GFN-18',
-        'long_name' : 'Generalized Fermat Prime Search (n=18)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 4,
-    },
-    'GFN-19': {
-        'short_name' : 'GFN-19',
-        'long_name' : 'Generalized Fermat Prime Search (n=19)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 10,
-    },
-    'GFN-20': {
-        'short_name' : 'GFN-20',
-        'long_name' : 'Generalized Fermat Prime Search (n=20)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES,
-        'deadline': 15,
-    },
-    'GFN-21': {
-        'short_name' : 'GFN-21',
-        'long_name' : 'Generalized Fermat Prime Search (n=21)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': YES_APP,
-        'deadline': 21,
-    },
-    'GFN-22': {
-        'short_name' : 'GFN-22',
-        'long_name' : 'Generalized Fermat Prime Search (n=22)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': NO,
-        'deadline': 21,
-    },
-    'GFN-DYFL': {
-        'short_name' : 'GFN-DYFL',
-        'long_name' : 'Do You Feel Lucky? (Genefer World Record Attempt)',
-        'url': 'https://www.primegrid.com/forum_thread.php?id=3980',
-        'llr': False,
-        'llr2': False,
-        'multithread': NO,
-        'deadline': 21,
-    },
-}
+def update_challenge_yaml():
+    r = requests.get('https://www.primegrid.com/challenge/challenge.php')
+    soup = BeautifulSoup(r.content, 'html.parser')
+    table = soup.find(id='table4')
+    rows = table.find_all('tr')
+    master_list = []
+    for tr in rows[2:-2]:
+        l=[]
+        for td in list(tr)[:-1]:
+            l.append(td.text if hasattr(td, 'text') else td)
+        master_list.append(l)
+    try:
+        with open(f"challenges{time('%Y')}.yaml", 'r') as f:
+            dump_list = yaml.load(f, Loader=yaml.FullLoader)
+    except:
+        dump_list = []
+    for i, ch in enumerate(master_list):
+        d=dump_list[i] if i < len(dump_list) else {}
+        d['number'] = int(ch[0])
+        d['start_time'] = datetime.strptime(f"{ch[1].split('-')[0]} {ch[1].split(' ')[-1]} {ch[2]}", '%d %B %H:%M:%S').strftime('%m/%d %H:%M')
+        for sp in subprojects.keys():
+            if sp in ch[3]:
+                d['sp'] = sp
+                break
+        d['title'] = ch[4]
+        d['length'] = int(ch[5].split(' ')[0])
+        d['celebrating'] = d['background'] = d['thread'] = "a"
+        d['updates'] = {
+            'first': False,
+            'second': False,
+            'news': False,
+            'stats': False,
+            'cleanup': False,
+            'results': False
+        } if 'updates' not in d.keys() else d['updates']
+        dump_list[i] = d
+    with open(f"challenges{time('%Y')}.yaml", 'w') as f:
+        yaml.dump(dump_list, f, default_flow_style=False)
+    return dump_list
+
+def get_needed_updates():
+    now = datetime.now()
+
+    def challenge_timeline(ch):
+        start = datetime.strptime(f"{ch['start_time']} {time('%Y')}", '%m/%d %H:%M %Y')
+        return dict(
+            # the dates after which we need to worry about each item
+            first = start - timedelta(weeks=2),
+            second = start - timedelta(weeks=1),
+            news = start - timedelta(days=3),
+            stats = start + timedelta(days=1),
+            end_reminder = start + timedelta(days=ch['length'] - 1),
+            cleanup = start + timedelta(days=ch['length']),
+            results = start + timedelta(days=ch['length']),
+        )
+
+    ups = {
+        'first': [],
+        'second': [],
+        'news': [],
+        'stats': [],
+        'cleanup': [],
+        'results': []
+    }
+
+    for ch in update_challenge_yaml():
+        t = challenge_timeline(ch)
+        for u in ch['updates']:
+            if ch['updates'][u] == False and now > t[u]:
+                ups[u].append(ch['title'])
+
+
 
 class challenge:
 
@@ -300,6 +156,7 @@ class challenge:
 
     def __init__(self, title, number, length, celebrating, sp, start_date, background, thread=None):
         self.title = title if "'s" in title else "the "+title
+        self.number_int = number
         self.number = self.ths[number]
         self.length = length
         self.celebrating = celebrating
@@ -312,16 +169,20 @@ class challenge:
         self.thread = thread
 
     def _get_users_page(self):
-        url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number}/top_users.html'
+        url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number_int}/top_users.html'
         r1 = requests.get(url)
         soup = BeautifulSoup(r1.content, 'html.parser')
         self._users_page = soup
     
     def _get_teams_page(self):
-        url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number}/top_teams.html'
+        url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number_int}/top_teams.html'
         r1 = requests.get(url)
         soup = BeautifulSoup(r1.content, 'html.parser')
         self._teams_page = soup
+    
+    def _get_primes_page(self):
+        # TODO: add primepage abbreviation field to subproject dict
+        url = f'https://www.primegrid.com/primes/primes.php?project={self.sp.abbrv}'
 
     @property
     def total_tasks_done(self):
@@ -362,7 +223,7 @@ class challenge:
             cols = row.find_all('td')
             cols = [ele for ele in cols if cols[0].text.strip() in ['1', '2', '3']]
             if cols:
-                teams.append(("https://primegrid.com"+cols[1].a['href'], cols[1].a.text.strip(), cols[4].text.strip().replace('\u202f', ',')))
+                teams.append(("https://primegrid.com"+cols[1].a['href'], cols[1].a.text.strip(), cols[3].text.strip().replace('\u202f', ',')))
         return teams
 
     @property
@@ -381,52 +242,31 @@ class challenge:
         rows = table.find_all('tr')
         return len(rows)-1
 
-def init_template(file):
-    with open(file+'.yml', 'w+', encoding="utf-8") as f:
-        f.write("""\
-title: 
-number: 
-length: 
-celebrating: 
-sp: 
-start_date: 
-background: >-
-
-thread: 
-        """)
-
 # I'm very sorry, i've used "template" for both the mako one and for the yaml file where you fill in the challenge info
+def main(init=False,template="",outfile=None,posts=[],**kwargs):
+    if init:
+        update_challenge_yaml()
+        exit()
+    if template:
+        with open(template, 'r', encoding="utf-8") as f:
+            y = yaml.safe_load(f)
+            c = challenge(**y)
+    if not outfile:
+        outfile = template.split('.')[0] + '.txt'
+    mtl = MakoTemplateLookup(directories=["", "project_overviews/", "templates/"])
+    
+    for post in posts:
+        file = outfile.split('.')[0] + '_' + post + ('.txt' if len(outfile.split('.')) == 1 else '.' + outfile.split('.')[1])
+        with open(file, 'w+', encoding="utf-8") as f:
+            print(mtl.get_template(post+".mako").render(c=c),file=f)
+
+
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('-i', '--init', default=None, help='initialize template')
     argparser.add_argument('-t', '--template', default=None, help='use template')
     argparser.add_argument('-o', '--outfile', default=None, help='output file')
-    argparser.add_argument('-g', '--generate', nargs='+', default=['firstpost','fullpost','newspost'], help='generate posts')
+    argparser.add_argument('-p', '--posts', nargs='+', default=['firstpost','fullpost','newspost'], help='generate posts')
     args = argparser.parse_args()
     args = vars(args)
-    if args['init']:
-        init_template(args['init'])
-        exit()
-    elif args['template']:
-        with open(args['template'], 'r', encoding="utf-8") as f:
-            y = yaml.safe_load(f)
-            c = challenge(**y)
-    else:
-        argparser.print_help()
-        exit()
-    if args['outfile']:
-        outfile = args['outfile']
-    else:
-        outfile = args['template'].split('.')[0] + '.txt'
-    mtl = MakoTemplateLookup(directories=["", "project_overviews/"])
-    makotemplates = {
-        'firstpost': mtl.get_template('firstpost.mako'),
-        'fullpost': mtl.get_template('challenge.mako'),
-        'newspost': mtl.get_template('newspost.mako'),
-        'endpost': mtl.get_template('results_are_final.mako'),
-    }
-    
-    for post in args['generate']:
-        file = outfile.split('.')[0] + '_' + post + ('.txt' if len(outfile.split('.')) == 1 else '.' + outfile.split('.')[1])
-        with open(file, 'w+', encoding="utf-8") as f:
-            print(makotemplates[post].render(c=c),file=f)
+    main(**args)

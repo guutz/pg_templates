@@ -1,0 +1,192 @@
+'321':
+  deadline: 6
+  llr: true
+  llr2: true
+  long_name: 321 Prime Search (LLR)
+  multithread: 'yes'
+  short_name: 321-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=7945
+AP27:
+  deadline: 7
+  llr: false
+  llr2: false
+  long_name: Arithmetic Progression of Primes 27
+  multithread: 'yes'
+  short_name: AP27
+  url: https://www.primegrid.com/forum_thread.php?id=7022
+CUL:
+  deadline: 14
+  llr: true
+  llr2: true
+  long_name: Cullen Prime Search (LLR)
+  multithread: 'yes'
+  short_name: CUL-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=7944
+DYFL:
+  deadline: 21
+  llr: false
+  llr2: false
+  long_name: Do You Feel Lucky? (Genefer World Record Attempt)
+  multithread: 'no'
+  short_name: DYFL
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+ESP:
+  deadline: 6
+  llr: true
+  llr2: true
+  long_name: Extended Sierpinski Problem (LLR)
+  multithread: 'yes'
+  short_name: ESP-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=5758
+GCW:
+  deadline: 10
+  llr: true
+  llr2: true
+  long_name: Generalized Cullen/Woodall Prime Search (LLR)
+  multithread: 'yes'
+  short_name: GCW-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=7073
+GFN-15:
+  deadline: 4
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=15)
+  multithread: 'no'
+  short_name: GFN-15
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-16:
+  deadline: 4
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=16)
+  multithread: 'yes'
+  short_name: GFN-16
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-17:
+  deadline: 4
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=17)
+  multithread: 'yes'
+  short_name: GFN-17
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-18:
+  deadline: 4
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=18)
+  multithread: 'yes'
+  short_name: GFN-18
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-19:
+  deadline: 10
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=19)
+  multithread: 'yes'
+  short_name: GFN-19
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-20:
+  deadline: 15
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=20)
+  multithread: 'yes'
+  short_name: GFN-20
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-21:
+  deadline: 21
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=21)
+  multithread: yes_app
+  short_name: GFN-21
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+GFN-22:
+  deadline: 21
+  llr: false
+  llr2: false
+  long_name: Generalized Fermat Prime Search (n=22)
+  multithread: 'no'
+  short_name: GFN-22
+  url: https://www.primegrid.com/forum_thread.php?id=3980
+MEGA:
+  deadline: 4
+  llr: true
+  llr2: true
+  long_name: Proth Mega Prime Search (LLR)
+  multithread: 'yes'
+  short_name: PPS-MEGA
+  url: https://www.primegrid.com/forum_thread.php?id=2665
+PPS:
+  deadline: 4
+  llr: true
+  llr2: true
+  long_name: Proth Prime Search (LLR)
+  multithread: slow
+  short_name: PPS-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=2665
+PPSE:
+  deadline: 4
+  llr: true
+  llr2: true
+  long_name: Proth Prime Search Extended (LLR)
+  multithread: slow
+  short_name: PPSE-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=2665
+PSP:
+  deadline: 21
+  llr: true
+  llr2: true
+  long_name: Prime Sierpinski Problem (LLR)
+  multithread: 'yes'
+  short_name: PSP-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=972
+SGS:
+  deadline: 4
+  llr: true
+  llr2: false
+  long_name: Sophie Germain Prime Search (LLR)
+  multithread: slow
+  short_name: SGS-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=1450
+SOB:
+  deadline: 35
+  llr: true
+  llr2: true
+  long_name: Seventeen or Bust (LLR)
+  multithread: 'yes'
+  short_name: SOB-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=1647
+SR5:
+  deadline: 6
+  llr: true
+  llr2: true
+  long_name: Siepinski/Riesel Base 5 Problem (LLR)
+  multithread: 'yes'
+  short_name: SR5-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=5087
+TRP:
+  deadline: 6
+  llr: true
+  llr2: true
+  long_name: The Riesel Problem (LLR)
+  multithread: 'yes'
+  short_name: TRP-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=1731
+WOO:
+  deadline: 14
+  llr: true
+  llr2: true
+  long_name: Woodall Prime Search (LLR)
+  multithread: 'yes'
+  short_name: WOO-LLR
+  url: https://www.primegrid.com/forum_thread.php?id=7944
+WW:
+  deadline: 7
+  llr: false
+  llr2: false
+  long_name: Wieferich and Wall-Sun-Sun Prime Search
+  multithread: 'yes'
+  short_name: WW
+  url: https://www.primegrid.com/forum_thread.php?id=9436
