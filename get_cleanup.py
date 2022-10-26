@@ -14,13 +14,15 @@ def main(cleanup=False,update=False,name="",**kwargs):
                 cleanup = [x for x in cleanup if name in x]
             entry = cleanup[-1].split(':')[-1].strip()
             day = datetime.strftime(datetime.now(), '%b %d')
-            print(f'{day}: {entry}')
+            if entry.count('(0)') == 2:
+                return 'EMPTY'
+            return f'{day}: {entry}'
         except:
-            raise Exception("Couldn't find anything")
+            return 'EMPTY'
     if update:
         r = requests.get('https://www.primegrid.com/info/show_update.php', auth=info_auth)
         soup = BeautifulSoup(r.content, 'html.parser')
-        print(soup)
+        return soup
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()

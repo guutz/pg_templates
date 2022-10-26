@@ -1,14 +1,15 @@
-<%page args="cpu_time,gpu_time,short_name"/>\
+<%page args="sp_list"/>\
 [u][b]Application Builds[/b][/u]
 
 [list][color=red][b]IMPORTANT: Overclocking -- including factory overclocking -- on Nvidia GPUs [u]is very strongly discouraged[/u]. Even if your GPU can run other tasks without difficulty, it may be unable to run GFN tasks when overclocked.[/b][/color]
 
-Supported platforms:
-*Windows: Nvidia GPU (OpenCL): 32 bit, AMD/ATI GPU (OpenCL): 32 bit${', CPU: 64 bit, 32 bit' if cpu_time else ''}
-*Linux: Nvidia GPU (OpenCL): 32 bit, 64 bit, AMD/ATI GPU (OpenCL): 32 bit, 64 bit${', CPU: 64 bit, 32 bit' if cpu_time else ''}
-*Mac: Nvidia GPU (OpenCL): 64 bit, AMD/ATI GPU (OpenCL): 64 bit${', CPU: 64 bit, 32 bit' if cpu_time else ''}
+% for sp in sp_list:
+Supported platforms for [b]${sp.short_name}[/b]:
+*Windows: Nvidia GPU (OpenCL): 32 bit, AMD/ATI GPU (OpenCL): 32 bit${', CPU: 64 bit, 32 bit' if sp.cpu_time else ''}
+*Linux: Nvidia GPU (OpenCL): 32 bit, 64 bit, AMD/ATI GPU (OpenCL): 32 bit, 64 bit${', CPU: 64 bit, 32 bit' if sp.cpu_time else ''}
+*Mac: Nvidia GPU (OpenCL): 64 bit, AMD/ATI GPU (OpenCL): 64 bit${', CPU: 64 bit, 32 bit' if sp.cpu_time else ''}
 [/list]
-
+% endfor
 
 [u][b]A Cautionary Reminder[/b][/u]
 
@@ -16,12 +17,14 @@ Supported platforms:
 
 [u]As with all number crunching, excessive heat can potentially cause permanent hardware failure. Please ensure your cooling system is sufficient.[/u]
 
-${short_name} WU's are currently averaging \
-% if cpu_time:
-${cpu_time} on CPU and \
+% for sp in sp_list:
+${sp.short_name} WU's are currently averaging \
+% if sp.cpu_time:
+${sp.cpu_time} on CPU and \
 % endif
-${gpu_time} on GPU.
+${sp.gpu_time} on GPU.
 For a general idea of how your GPU stacks up, you can have a look at the [url=http://www.primegrid.com/gpu_list.php]fastest GPUs list[/url].
+% endfor
 
 If your CPU is highly overclocked, please consider "stress testing" it. Overclocking your GPU is not recommended at all for GeneferCUDA. Sieving is an excellent alternative for computers that are not able to run Genefer. :)
 

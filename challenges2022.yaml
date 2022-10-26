@@ -1,10 +1,12 @@
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 3
   number: 1
-  sp: GFN-17
+  sp:
+  - GFN-17
+  - MEGA
   start_time: 01/17 17:17
-  thread: a
+  thread: TODO!
   title: Heptadecagenarian Challenge
   updates:
     cleanup: true
@@ -13,13 +15,14 @@
     results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 5
   number: 2
-  sp: '321'
+  sp:
+  - '321'
   start_time: 03/21 03:21
-  thread: a
+  thread: TODO!
   title: World Water Day Challenge
   updates:
     cleanup: true
@@ -28,13 +31,14 @@
     results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 5
   number: 3
-  sp: GFN-19
+  sp:
+  - GFN-19
   start_time: 05/25 18:00
-  thread: a
+  thread: TODO!
   title: Geek Pride Day Challenge
   updates:
     cleanup: true
@@ -43,13 +47,14 @@
     results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 5
   number: 4
-  sp: SR5
+  sp:
+  - SR5
   start_time: 06/17 13:00
-  thread: a
+  thread: TODO!
   title: M.C. Escher's Birthday Challenge
   updates:
     cleanup: true
@@ -58,13 +63,14 @@
     results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 3
   number: 5
-  sp: PPS
+  sp:
+  - PPS
   start_time: 07/22 22:00
-  thread: a
+  thread: TODO!
   title: Pi Approximation Day Challenge
   updates:
     cleanup: true
@@ -73,58 +79,65 @@
     results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 3
   number: 6
-  sp: WW
+  sp:
+  - WW
   start_time: 09/17 20:00
-  thread: a
+  thread: TODO!
   title: Riemann's Birthday Challenge
   updates:
     cleanup: true
     first: true
     news: true
-    results: false
+    results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 7
   number: 7
-  sp: TRP
+  sp:
+  - TRP
   start_time: 10/04 12:00
-  thread: a
+  thread: TODO!
   title: World Space Week Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: true
     news: true
-    results: false
+    results: true
     second: true
     stats: true
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 10
   number: 8
-  sp: CUL
+  sp:
+  - CUL
+  - WOO
   start_time: 11/01 05:00
-  thread: a
+  thread: TODO!
   title: Prime Meridian Day Challenge
   updates:
     cleanup: false
-    first: false
+    first: true
     news: false
     results: false
-    second: false
+    second: true
     stats: false
-- background: a
-  celebrating: a
+- background: TODO!
+  celebrating: celebrating TODO!
   length: 10
   number: 9
-  sp: DYFL
+  sp:
+  - DYFL
+  - GFN-21
+  - GFN-22
   start_time: 12/07 05:00
-  thread: a
+  thread: TODO!
   title: Great Internet Fermat Prime Search Challenge
   updates:
     cleanup: false

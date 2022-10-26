@@ -17,78 +17,101 @@ subprojects = yaml.safe_load(open('subprojects.yaml', 'r', encoding="utf-8"))
 def time(s):
     return datetime.now().strftime(s)
 
-def update_challenge_yaml():
-    r = requests.get('https://www.primegrid.com/challenge/challenge.php')
-    soup = BeautifulSoup(r.content, 'html.parser')
-    table = soup.find(id='table4')
-    rows = table.find_all('tr')
-    master_list = []
-    for tr in rows[2:-2]:
-        l=[]
-        for td in list(tr)[:-1]:
-            l.append(td.text if hasattr(td, 'text') else td)
-        master_list.append(l)
-    try:
-        with open(f"challenges{time('%Y')}.yaml", 'r') as f:
-            dump_list = yaml.load(f, Loader=yaml.FullLoader)
-    except:
-        dump_list = []
-    for i, ch in enumerate(master_list):
-        d=dump_list[i] if i < len(dump_list) else {}
-        d['number'] = int(ch[0])
-        d['start_time'] = datetime.strptime(f"{ch[1].split('-')[0]} {ch[1].split(' ')[-1]} {ch[2]}", '%d %B %H:%M:%S').strftime('%m/%d %H:%M')
-        for sp in subprojects.keys():
-            if sp in ch[3]:
-                d['sp'] = sp
-                break
-        d['title'] = ch[4]
-        d['length'] = int(ch[5].split(' ')[0])
-        d['celebrating'] = d['background'] = d['thread'] = "a"
-        d['updates'] = {
-            'first': False,
-            'second': False,
-            'news': False,
-            'stats': False,
-            'cleanup': False,
-            'results': False
-        } if 'updates' not in d.keys() else d['updates']
-        dump_list[i] = d
-    with open(f"challenges{time('%Y')}.yaml", 'w') as f:
-        yaml.dump(dump_list, f, default_flow_style=False)
-    return dump_list
+class yaml_boi:
+    def __init__(self, file=None):
+        self.file = file if file else f"challenges{time('%Y')}.yaml"
+        self.data = []
+        try:
+            with open(self.file,'r') as f:
+                self.data = yaml.load(f, Loader=yaml.FullLoader)
+        finally:
+            self.update_challenges()
+    
+    def __getitem__(self, key):
+        if type(key) == str:
+            return [ch for ch in self.data if ch['title'] == key][0]
+        return self.data[key]
+    
+    def __setitem__(self, key, value):
+        self.data[key] = value
+        self.save()
+    
+    def save(self):
+        with open(self.file, 'w') as f:
+            yaml.dump(self.data, f, default_flow_style=False)
 
-def get_needed_updates():
-    now = datetime.now()
+    def __iter__(self):
+        return iter(self.data)
 
-    def challenge_timeline(ch):
-        start = datetime.strptime(f"{ch['start_time']} {time('%Y')}", '%m/%d %H:%M %Y')
-        return dict(
-            # the dates after which we need to worry about each item
-            first = start - timedelta(weeks=2),
-            second = start - timedelta(weeks=1),
-            news = start - timedelta(days=3),
-            stats = start + timedelta(days=1),
-            end_reminder = start + timedelta(days=ch['length'] - 1),
-            cleanup = start + timedelta(days=ch['length']),
-            results = start + timedelta(days=ch['length']),
-        )
+    def __len__(self):
+        return len(self.data)
+    
+    def update_challenges(self):
+        r = requests.get('https://www.primegrid.com/challenge/challenge.php')
+        soup = BeautifulSoup(r.content, 'html.parser')
+        table = soup.find(id='table4')
+        rows = table.find_all('tr')
+        master_list = []
+        for tr in rows[2:-2]:
+            l=[]
+            for td in list(tr)[:-1]:
+                l.append(td.text if hasattr(td, 'text') else td)
+            master_list.append(l)
 
-    ups = {
-        'first': [],
-        'second': [],
-        'news': [],
-        'stats': [],
-        'cleanup': [],
-        'results': []
-    }
+        for i, ch in enumerate(master_list):
+            d=self[i] if i < len(self) else {}
+            d['number'] = int(ch[0])
+            d['start_time'] = datetime.strptime(f"{ch[1].split('-')[0]} {ch[1].split(' ')[-1]} {ch[2]}", '%d %B %H:%M:%S').strftime('%m/%d %H:%M')
+            d['sp'] = []
+            for sp in subprojects.keys():
+                if sp in ch[3]:
+                    d['sp'].append(sp)
+            d['title'] = ch[4]
+            d['length'] = int(ch[5].split(' ')[0])
+            d['celebrating'] = "celebrating TODO!"
+            d['background'] = d['thread'] = "TODO!"
+            d['updates'] = {
+                'first': False,
+                'second': False,
+                'news': False,
+                'stats': False,
+                'cleanup': False,
+                'results': False
+            } if 'updates' not in d.keys() else d['updates']
+            self[i] = d
 
-    for ch in update_challenge_yaml():
-        t = challenge_timeline(ch)
-        for u in ch['updates']:
-            if ch['updates'][u] == False and now > t[u]:
-                ups[u].append(ch['title'])
+    def get_needed_updates(self):
+        now = datetime.now()
 
+        def challenge_timeline(ch):
+            start = datetime.strptime(f"{ch['start_time']} {time('%Y')}", '%m/%d %H:%M %Y')
+            return dict(
+                # the dates after which we need to worry about each item
+                first = start - timedelta(weeks=2),
+                second = start - timedelta(weeks=1),
+                news = start - timedelta(days=3),
+                stats = start + timedelta(days=1),
+                end_reminder = start + timedelta(days=ch['length'] - 1),
+                cleanup = start + timedelta(days=ch['length']),
+                results = start + timedelta(days=ch['length']),
+            )
 
+        ups = {
+            'first': [],
+            'second': [],
+            'news': [],
+            'stats': [],
+            'cleanup': [],
+            'results': []
+        }
+
+        for ch in self:
+            t = challenge_timeline(ch)
+            for u, s in ch['updates'].items():
+                if s == False and now > t[u]:
+                    ups[u].append(ch['title'])
+
+        return ups
 
 class challenge:
 
@@ -154,19 +177,22 @@ class challenge:
             return None
             
 
-    def __init__(self, title, number, length, celebrating, sp, start_date, background, thread=None):
+    def __init__(self, title, number, length, celebrating, sp, start_time, background, thread=None, **kwargs):
         self.title = title if "'s" in title else "the "+title
         self.number_int = number
         self.number = self.ths[number]
         self.length = length
         self.celebrating = celebrating
-        self.sp = self.subproject(sp)
-        self._start_time_object = datetime.strptime(start_date, '%m/%d %H:%M')
+        self.sp = [self.subproject(s) for s in sp]
+        self._start_time_object = datetime.strptime(start_time, '%m/%d %H:%M')
         self._end_time_object = self._start_time_object + timedelta(days=self.length)
         self.start = self._start_time_object.strftime('%d %B %H:%M UTC')
         self.end = self._end_time_object.strftime('%d %B %H:%M UTC')
         self.background = background
         self.thread = thread
+    
+    def s(self):
+        return 's' if len(self.sp)>1 else ''
 
     def _get_users_page(self):
         url = f'https://www.primegrid.com/challenge/{time("%Y")}_{self.number_int}/top_users.html'
@@ -245,20 +271,24 @@ class challenge:
 # I'm very sorry, i've used "template" for both the mako one and for the yaml file where you fill in the challenge info
 def main(init=False,template="",outfile=None,posts=[],**kwargs):
     if init:
-        update_challenge_yaml()
+        y = yaml_boi(file=outfile)
         exit()
     if template:
-        with open(template, 'r', encoding="utf-8") as f:
-            y = yaml.safe_load(f)
-            c = challenge(**y)
+        y = yaml_boi()
+        c = challenge(**y[template])
     if not outfile:
         outfile = template.split('.')[0] + '.txt'
     mtl = MakoTemplateLookup(directories=["", "project_overviews/", "templates/"])
     
+    outputs = []
     for post in posts:
         file = outfile.split('.')[0] + '_' + post + ('.txt' if len(outfile.split('.')) == 1 else '.' + outfile.split('.')[1])
         with open(file, 'w+', encoding="utf-8") as f:
-            print(mtl.get_template(post+".mako").render(c=c),file=f)
+            r = mtl.get_template(post + '.mako').render(c=c)
+            print(r,file=f)
+            outputs.append(r)
+    return outputs
+        
 
 
 if __name__ == '__main__':
@@ -266,7 +296,7 @@ if __name__ == '__main__':
     argparser.add_argument('-i', '--init', default=None, help='initialize template')
     argparser.add_argument('-t', '--template', default=None, help='use template')
     argparser.add_argument('-o', '--outfile', default=None, help='output file')
-    argparser.add_argument('-p', '--posts', nargs='+', default=['firstpost','fullpost','newspost'], help='generate posts')
+    argparser.add_argument('-p', '--posts', nargs='+', default=['firstpost','secondpost','newspost'], help='generate posts')
     args = argparser.parse_args()
     args = vars(args)
     main(**args)
