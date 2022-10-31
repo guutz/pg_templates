@@ -124,7 +124,7 @@
   updates:
     cleanup: false
     first: true
-    news: false
+    news: true
     results: false
     second: true
     stats: false
