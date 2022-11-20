@@ -127,7 +127,7 @@
     news: true
     results: false
     second: true
-    stats: false
+    stats: true
 - background: TODO!
   celebrating: celebrating TODO!
   length: 10

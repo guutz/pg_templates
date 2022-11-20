@@ -4,6 +4,9 @@ import requests
 from mako.lookup import TemplateLookup as MakoTemplateLookup
 from datetime import datetime, timedelta
 import yaml
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 YES = 'yes'
 NO = 'no'
@@ -24,6 +27,7 @@ class yaml_boi:
         try:
             with open(self.file,'r') as f:
                 self.data = yaml.load(f, Loader=yaml.FullLoader)
+            logging.info(f"Loaded {self.file}")
         finally:
             self.update_challenges()
     
@@ -47,9 +51,11 @@ class yaml_boi:
         return len(self.data)
     
     def update_challenges(self):
+        logging.info("Requesting challenge.php")
         r = requests.get('https://www.primegrid.com/challenge/challenge.php')
         soup = BeautifulSoup(r.content, 'html.parser')
         table = soup.find(id='table4')
+        logging.info("Parsing challenge.php")
         rows = table.find_all('tr')
         master_list = []
         for tr in rows[2:-2]:
@@ -70,6 +76,7 @@ class yaml_boi:
             d['length'] = int(ch[5].split(' ')[0])
             d['celebrating'] = "celebrating TODO!"
             d['background'] = d['thread'] = "TODO!"
+            if 'updates' not in d.keys(): logging.info(f"Initializing updates field for {d['title']}")
             d['updates'] = {
                 'first': False,
                 'second': False,
@@ -81,6 +88,7 @@ class yaml_boi:
             self[i] = d
 
     def get_needed_updates(self):
+        logging.info("Getting needed updates")
         now = datetime.now()
 
         def challenge_timeline(ch):
@@ -90,7 +98,7 @@ class yaml_boi:
                 first = start - timedelta(weeks=2),
                 second = start - timedelta(weeks=1),
                 news = start - timedelta(days=3),
-                stats = start + timedelta(days=1),
+                stats = start,
                 end_reminder = start + timedelta(days=ch['length'] - 1),
                 cleanup = start + timedelta(days=ch['length']),
                 results = start + timedelta(days=ch['length']),
@@ -110,6 +118,7 @@ class yaml_boi:
             for u, s in ch['updates'].items():
                 if s == False and now > t[u]:
                     ups[u].append(ch['title'])
+                    logging.info(f"Need to do {u} for {ch['title']}")
 
         return ups
 
@@ -271,6 +280,7 @@ class challenge:
 # I'm very sorry, i've used "template" for both the mako one and for the yaml file where you fill in the challenge info
 def main(init=False,template="",outfile=None,posts=[],**kwargs):
     if init:
+        logging.info(f"Initializing new challenge yaml file: {outfile}")
         y = yaml_boi(file=outfile)
         exit()
     if template:
@@ -283,6 +293,7 @@ def main(init=False,template="",outfile=None,posts=[],**kwargs):
     outputs = []
     for post in posts:
         file = outfile.split('.')[0] + '_' + post + ('.txt' if len(outfile.split('.')) == 1 else '.' + outfile.split('.')[1])
+        logging.info(f"Writing {c.title}: {post} to {file}")
         with open(file, 'w+', encoding="utf-8") as f:
             r = mtl.get_template(post + '.mako').render(c=c)
             print(r,file=f)
