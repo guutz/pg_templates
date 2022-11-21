@@ -38,18 +38,21 @@ for u, chs in y.get_needed_updates().items():
             y[ch]['updates'][u] = True
 y.save()
 
-mail=""""""
+mail="""#######################################\n#######################################\n"""
 if email_contents:
     for i in email_contents:
         mail+=str(i)
-        mail+='\n-------------------\n\n'
+        mail+='\n#######################################\n#######################################\n'
     if mail.count('TODO!') > 0:
-        mail = "SOME STUFF NEEDS TO BE FILLED IN HERE FIRST!\n\n\n" + mail
+        mail = "SOME STUFF NEEDS TO BE FILLED IN HERE FIRST!\n\n#######################################\n#######################################\n" + mail
 else:
     mail = "There's nothing here!"
 
 import yagmail
-from auth import yagmail_auth
+try:
+    from auth import yagmail_auth
+except ImportError:
+    yagmail_auth = "yagmail_auth.json"
 
 with yagmail.SMTP("magpie31415@gmail.com", oauth2_file=yagmail_auth) as yag:
     yag.send(

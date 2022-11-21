@@ -1,6 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
-from auth import info_auth
+try:
+    from auth import info_auth
+except ImportError:
+    import os
+    info_auth = (os.environ['INFO_AUTH_USER'], os.environ['INFO_AUTH_PASS'])
 from datetime import datetime
 import argparse
 import logging

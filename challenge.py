@@ -164,8 +164,12 @@ class challenge:
                 return f"{int(hms[0])//24} days"
             return f"{int(hms[0])//168} weeks"
 
-        def _get_prefs_page(self):     
-            from auth import strong_key
+        def _get_prefs_page(self):
+            try:
+                from auth import strong_key
+            except ImportError:
+                import os
+                strong_key = os.environ['STRONG_KEY']
             url = 'https://www.primegrid.com/prefs_edit.php?subset=project&cols=1'
             cookies = {'auth': strong_key}
             r = requests.get(url, cookies=cookies)
