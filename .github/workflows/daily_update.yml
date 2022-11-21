@@ -19,7 +19,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests yagmail beautifulsoup4 argparse mako pyyaml
-      - name: execute py script # run file
+      - name: Fetch Secrets and Run daily_update.py
         env:
           GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
           INFO_AUTH_USER: ${{ secrets.INFO_AUTH_USER }}
@@ -28,3 +28,11 @@ jobs:
         run: |
           echo $GMAIL_SECRET > yagmail_auth.json
           python daily_update.py
+          rm -f yagmail_auth.json
+      - name: Push updates
+        run: |
+          git config --global user.name "guutz"
+          git config --global user.email "findmagpie@gmail.com"
+          git commit -am "daily update"
+          git push
+      
