@@ -10,7 +10,7 @@ jobs:
     name: Send Daily Update Email
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Python
         uses: actions/setup-python@v4.3.0
         with:
@@ -33,6 +33,6 @@ jobs:
         run: |
           git config --global user.name "guutz"
           git config --global user.email "findmagpie@gmail.com"
-          git commit -am "daily update"
+          git commit -a -m "daily update"
           git push
       
