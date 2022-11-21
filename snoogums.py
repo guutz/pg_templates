@@ -2,7 +2,7 @@ import yagmail
 try:
     from auth import yagmail_auth
 except ImportError:
-    yagmail_auth = None
+    yagmail_auth = "yagmail_auth.json"
 import pickle
 from datetime import datetime, timedelta
 
