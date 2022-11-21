@@ -34,5 +34,4 @@ jobs:
           git config --global user.name "guutz"
           git config --global user.email "findmagpie@gmail.com"
           git commit -a -m "daily update"
-          git push
       
