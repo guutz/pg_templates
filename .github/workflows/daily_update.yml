@@ -29,9 +29,14 @@ jobs:
           echo $GMAIL_SECRET > yagmail_auth.json
           python daily_update.py
           rm -f yagmail_auth.json
-      - name: Push updates
+      - name: Check for modified files
+        id: git-check
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+      - name: Commit and push changes
+        if: steps.git-check.outputs.modified == 'true'
         run: |
-          git config --global user.name "guutz"
-          git config --global user.email "findmagpie@gmail.com"
-          git commit -a -m "daily update"
-      
+          git config --global user.name 'Automated Publisher'
+          git config --global user.email 'actions@users.noreply.github.com'
+          git commit -am "daily update"
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git push
