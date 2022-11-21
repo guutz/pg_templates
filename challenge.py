@@ -33,7 +33,7 @@ class yaml_boi:
     
     def __getitem__(self, key):
         if type(key) == str:
-            return [ch for ch in self.data if ch['title'] == key][0]
+            return [ch for ch in self.data if key in ch['title']][0]
         return self.data[key]
     
     def __setitem__(self, key, value):
@@ -144,7 +144,9 @@ class challenge:
         
         @property
         def cpu_time(self):
-            hms = self.get_time(CPU).split(':')
+            hms = self.get_time(CPU)
+            if hms is None: return None
+            hms = hms.split(':')
             if int(hms[0]) == 0:
                 return f"{hms[1].strip('0')} minutes"
             if int(hms[0]) < 48:
@@ -155,7 +157,9 @@ class challenge:
                 
         @property
         def gpu_time(self):
-            hms = self.get_time(GPU).split(':')
+            hms = self.get_time(GPU)
+            if hms is None: return None
+            hms = hms.split(':')
             if int(hms[0]) == 0:
                 return f"{hms[1].strip('0')} minutes"
             if int(hms[0]) < 48:
