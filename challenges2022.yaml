@@ -141,7 +141,7 @@
   title: Great Internet Fermat Prime Search Challenge
   updates:
     cleanup: false
-    first: false
+    first: true
     news: false
     results: false
     second: false
