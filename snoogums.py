@@ -15,7 +15,7 @@ contents = [f"<img src='https://storage.googleapis.com/guutz/among-meme/among_{s
 def send(n,m):
     with yagmail.SMTP("magpie31415@gmail.com", oauth2_file=yagmail_auth) as yag:
         yag.send(
-            to="findmagpie@gmail.com", #"snoogums@googlegroups.com",
+            to="snoogums@googlegroups.com",
             subject=f"C͓̽L͓̽U͓̽E͓̽L͓̽E͓̽S͓̽S͓̽ #{n}",
             contents=m,
         )
