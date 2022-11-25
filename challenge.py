@@ -95,7 +95,7 @@ class yaml_boi:
             start = datetime.strptime(f"{ch['start_time']} {time('%Y')}", '%m/%d %H:%M %Y')
             return dict(
                 # the dates after which we need to worry about each item
-                first = start + timedelta(years=999),
+                first = start + timedelta(weeks=999),
                 second = start - timedelta(weeks=2),
                 news = start - timedelta(days=3),
                 stats = start,

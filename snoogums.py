@@ -6,28 +6,21 @@ except ImportError:
 import pickle
 from datetime import datetime, timedelta
 
-mail = pickle.load(open('mail_dict.p', 'rb'))
-current_n = int((list(mail.keys())[0]-datetime(2022, 11, 3))/timedelta(days=1/25))
+time_from_start = datetime.now()-datetime(2022, 11, 25, 14, 22)
+n = int(time_from_start/timedelta(minutes=15))
+s = str((n+1)*4)
+s = "0"*max(0, 5-len(s))+s
+contents = [f"<img src='https://storage.googleapis.com/guutz/among-meme/among_{s}.png'>"]
 
 def send(n,m):
     with yagmail.SMTP("magpie31415@gmail.com", oauth2_file=yagmail_auth) as yag:
         yag.send(
-            to="snoogums@googlegroups.com",
-            subject=f"NATE THE SNAKE #{n}",
+            to="findmagpie@gmail.com", #"snoogums@googlegroups.com",
+            subject=f"C͓̽L͓̽U͓̽E͓̽L͓̽E͓̽S͓̽S͓̽ #{n}",
             contents=m,
         )
 
-dellist = []
-for n, t, m in zip(range(len(mail.keys())), mail.keys(), mail.values()):
-    if datetime.now() > t:
-        print(f"Sending mail #{n+current_n+1} scheduled for {t}")
-        send(n+current_n+1, m)
-        dellist.append(t)
-    else:
-        break
-
-for t in dellist:
-    del mail[t]
-pickle.dump(mail, open('mail_dict.p', 'wb'))
-current_n = int((datetime.now()-datetime(2022, 11, 3))/timedelta(days=1/25))
-print(f"[{datetime.now()}] {len(mail.keys())} mails remain. Next mail #{current_n+2} in {list(mail.keys())[0]-datetime.now()}. Last mail in {list(mail.keys())[-1]-datetime.now()}.")
+if int(s)>=4 and int(s)<=1296:
+    send(n, contents)
+else:
+    print("Not yet")
