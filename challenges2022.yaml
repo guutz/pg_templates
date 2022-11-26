@@ -144,5 +144,5 @@
     first: true
     news: false
     results: false
-    second: false
+    second: true
     stats: false
