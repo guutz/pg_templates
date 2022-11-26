@@ -20,7 +20,11 @@ def send(n,m):
             contents=m,
         )
 
-if int(s)>=4 and int(s)<=1296:
-    send(n, contents)
-else:
-    print("Not yet")
+try:
+    n_prev = pickle.load(open("snoogums.p", "rb"))
+except EOFError:
+    n_prev = 2
+for i in range(n_prev+1,n+1):
+    if int(s)>=4 and int(s)<=1296:
+        send(i, contents)
+pickle.dump(n, open("snoogums.p", "wb"))
