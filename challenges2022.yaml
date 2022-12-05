@@ -122,10 +122,10 @@
   thread: TODO!
   title: Prime Meridian Day Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: true
     news: true
-    results: false
+    results: true
     second: true
     stats: true
 - background: TODO!
