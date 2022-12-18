@@ -140,9 +140,9 @@
   thread: TODO!
   title: Great Internet Fermat Prime Search Challenge
   updates:
-    cleanup: true
+    cleanup: false
     first: true
     news: true
-    results: true
+    results: false
     second: true
-    stats: false
+    stats: true
