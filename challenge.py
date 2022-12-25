@@ -62,6 +62,8 @@ class yaml_boi:
             l=[]
             for td in list(tr)[:-1]:
                 l.append(td.text if hasattr(td, 'text') else td)
+            link = tr.find('x')
+            l.append("https://www.primegrid.com"+(link['href'] if link else '/forum_post.php?id=2'))
             master_list.append(l)
 
         for i, ch in enumerate(master_list):
@@ -75,7 +77,8 @@ class yaml_boi:
             d['title'] = ch[4]
             d['length'] = int(ch[5].split(' ')[0])
             d['celebrating'] = "celebrating TODO!"
-            d['background'] = d['thread'] = "TODO!"
+            d['background'] = "TODO!"
+            d['thread'] = ch[6]
             if 'updates' not in d.keys(): logging.info(f"Initializing updates field for {d['title']}")
             d['updates'] = {
                 'first': False,
@@ -304,6 +307,7 @@ def main(init=False,template="",outfile=None,posts=[],**kwargs):
         logging.info(f"Writing {c.title}: {post} to {file}")
         with open(file, 'w+', encoding="utf-8") as f:
             r = mtl.get_template(post + '.mako').render(c=c)
+            r += '\n\n'+c.thread
             print(r,file=f)
             outputs.append(r)
     return outputs
