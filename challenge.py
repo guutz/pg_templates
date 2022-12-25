@@ -306,7 +306,8 @@ def main(init=False,template="",outfile=None,posts=[],**kwargs):
         file = outfile.split('.')[0] + '_' + post + ('.txt' if len(outfile.split('.')) == 1 else '.' + outfile.split('.')[1])
         logging.info(f"Writing {c.title}: {post} to {file}")
         with open(file, 'w+', encoding="utf-8") as f:
-            r = mtl.get_template(post + '.mako').render(c=c)
+            r = c.title + '\n\n'
+            r += mtl.get_template(post + '.mako').render(c=c)
             r += '\n\n'+c.thread
             print(r,file=f)
             outputs.append(r)
