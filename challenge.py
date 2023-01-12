@@ -27,6 +27,7 @@ class yaml_boi:
         try:
             with open(self.file,'r') as f:
                 self.data = yaml.load(f, Loader=yaml.FullLoader)
+                if self.data is None: self.data = []
             logging.info(f"Loaded {self.file}")
         finally:
             self.update_challenges()
