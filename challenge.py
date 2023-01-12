@@ -50,6 +50,10 @@ class yaml_boi:
 
     def __len__(self):
         return len(self.data)
+
+    def append(self, item):
+        self.data.append(item)
+        self.save()
     
     def update_challenges(self):
         logging.info("Requesting challenge.php")
