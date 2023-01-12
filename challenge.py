@@ -33,7 +33,7 @@ class yaml_boi:
             self.update_challenges()
     
     def __getitem__(self, key):
-        if type(key) == str:
+        if isinstance(key, str):
             return [ch for ch in self.data if key in ch['title']][0]
         return self.data[key]
     
@@ -68,7 +68,8 @@ class yaml_boi:
             master_list.append(l)
 
         for i, ch in enumerate(master_list):
-            d=self[i] if i < len(self) else {}
+            if i >= len(self): self.append({})
+            d=self[i]
             d['number'] = int(ch[0])
             d['start_time'] = datetime.strptime(f"{ch[1].split('-')[0]} {ch[1].split(' ')[-1]} {ch[2]}", '%d %B %H:%M:%S').strftime('%m/%d %H:%M')
             d['sp'] = []
