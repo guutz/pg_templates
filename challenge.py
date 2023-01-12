@@ -64,28 +64,39 @@ class yaml_boi:
         rows = table.find_all('tr')
         master_list = []
         for tr in rows[2:-2]:
-            l=[]
+            l = []
             for td in list(tr)[:-1]:
                 l.append(td.text if hasattr(td, 'text') else td)
             link = tr.find('x')
             l.append("https://www.primegrid.com"+(link['href'] if link else '/forum_post.php?id=2'))
             master_list.append(l)
 
-        for i, ch in enumerate(master_list):
+        def extract_start_time(challenge):
+            from parse import parse
+            time_str = challenge[1] + " " + challenge[2]
+            if ((res := parse("{day:d}-{:d} {month} {hour:d}:{minute:d}:{second:d}", time_str)) is not None):
+                time_data = res.named
+            else:
+                time_data = parse("{day:d} {month} - {:d} {} {hour:d}:{minute:d}:{second:d}", time_str).named
+            time_data["month"] = datetime.strptime(time_data["month"], "%B").month
+            dt = datetime(1900, **time_data)
+            return dt.strftime('%m/%d %H:%M')
+
+        for i, challenge in enumerate(master_list):
             if i >= len(self): self.append({})
-            d=self[i]
-            d['number'] = int(ch[0])
-            d['start_time'] = datetime.strptime(f"{ch[1].split('-')[0]} {ch[1].split(' ')[-1]} {ch[2]}", '%d %B %H:%M:%S').strftime('%m/%d %H:%M')
+            d = self[i]
+            d['number'] = int(challenge[0])
+            d['start_time'] = extract_start_time(challenge)
             d['sp'] = []
-            for sp in subprojects.keys():
-                if sp in ch[3]:
+            for sp in subprojects:
+                if sp in challenge[3]:
                     d['sp'].append(sp)
-            d['title'] = ch[4]
-            d['length'] = int(ch[5].split(' ')[0])
+            d['title'] = challenge[4]
+            d['length'] = int(challenge[5].split(' ')[0])
             d['celebrating'] = "celebrating TODO!"
             d['background'] = "TODO!"
-            d['thread'] = ch[6]
-            if 'updates' not in d.keys(): logging.info(f"Initializing updates field for {d['title']}")
+            d['thread'] = challenge[6]
+            if 'updates' not in d: logging.info(f"Initializing updates field for {d['title']}")
             d['updates'] = {
                 'first': False,
                 'second': False,
@@ -93,7 +104,7 @@ class yaml_boi:
                 'stats': False,
                 'cleanup': False,
                 'results': False
-            } if 'updates' not in d.keys() else d['updates']
+            } if 'updates' not in d else d['updates']
             self[i] = d
 
     def get_needed_updates(self):
@@ -122,16 +133,16 @@ class yaml_boi:
             'results': []
         }
 
-        for ch in self:
-            t = challenge_timeline(ch)
-            for u, s in ch['updates'].items():
+        for challenge in self:
+            t = challenge_timeline(challenge)
+            for u, s in challenge['updates'].items():
                 if s == False and now > t[u]:
-                    ups[u].append(ch['title'])
-                    logging.info(f"Need to do {u} for {ch['title']}")
+                    ups[u].append(challenge['title'])
+                    logging.info(f"Need to do {u} for {challenge['title']}")
 
         return ups
 
-class challenge:
+class Challenge:
 
     ths = {
         1: 'first',
@@ -145,7 +156,7 @@ class challenge:
         9: 'ninth and final',
     }
 
-    class subproject:
+    class Subproject:
         def __init__(self, name):
             self.name = name
             for key, value in subprojects[name].items():
@@ -209,7 +220,7 @@ class challenge:
         self.number = self.ths[number]
         self.length = length
         self.celebrating = celebrating
-        self.sp = [self.subproject(s) for s in sp]
+        self.sp = [self.Subproject(s) for s in sp]
         self._start_time_object = datetime.strptime(start_time, '%m/%d %H:%M')
         self._end_time_object = self._start_time_object + timedelta(days=self.length)
         self.start = self._start_time_object.strftime('%d %B %H:%M UTC')
@@ -302,7 +313,7 @@ def main(init=False,template="",outfile=None,posts=[],**kwargs):
         exit()
     if template:
         y = yaml_boi()
-        c = challenge(**y[template])
+        c = Challenge(**y[template])
     if not outfile:
         outfile = template.split('.')[0] + '.txt'
     mtl = MakoTemplateLookup(directories=["", "project_overviews/", "templates/"])
