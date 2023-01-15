@@ -1,0 +1,7 @@
+[u][b]More information on Generalized Fermat Numbers and the Genefer program[/b][/u]
+[list]
+*[url=http://www.primegrid.com/forum_forum.php?id=75]Generalized Fermat Number Search Forum[/url]
+*[url=http://en.wikipedia.org/wiki/Generalized_Fermat_number#Generalized_Fermat_numbers]Wikipedia: Generalized Fermat Numbers[/url]
+*[url=http://en.wikipedia.org/wiki/Fermat]Wikipedia: Pierre de Fermat[/url]
+*[url=http://yves.gallot.pagesperso-orange.fr/primes/index.html]Yves Gallot's Generalized Primes Search pages[/url]
+[/list]

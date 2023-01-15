@@ -2,10 +2,16 @@ from challenge import yaml_boi, main, time
 from get_cleanup import main as info
 import logging
 import traceback
+import argparse
 
 logging.basicConfig(level=logging.INFO)
 
-y = yaml_boi()
+ap = argparse.ArgumentParser()
+ap.add_argument("-o", "--offline", action="store_true", help="Run without updating the yaml")
+args = vars(ap.parse_args())
+offline = args["offline"] if args["offline"] else False
+
+y = yaml_boi(offline=offline)
 
 email_contents=[]
 
@@ -15,7 +21,7 @@ try:
             if u == 'stats':
                 logging.info(f" {u} update for {ch}")
                 with open(f"{time('%Y-%m-%d')}.txt", 'a') as f:
-                    i = info(update=True, name=ch.split(" ")[0])
+                    i = info(update=True, name=y[ch]['title'].split(" ")[0])
                     if i == 'EMPTY':
                         y[ch]['updates']['stats'] = True
                     else:
@@ -24,7 +30,7 @@ try:
             elif u == 'cleanup':
                 logging.info(f" {u} update for {ch}")
                 with open(f"{time('%Y-%m-%d')}.txt", 'a') as f:
-                    i = info(cleanup=True, name=ch.split(" ")[0])
+                    i = info(cleanup=True, name=y[ch]['title'].split(" ")[0])
                     if i == 'EMPTY':
                         y[ch]['updates']['cleanup'] = True
                     else:

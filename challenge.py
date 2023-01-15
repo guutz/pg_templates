@@ -21,59 +21,47 @@ def time(s):
     return datetime.now().strftime(s)
 
 class yaml_boi:
-    def __init__(self, file=None):
+    def __init__(self, file=None, offline=False):
         self.file = file if file else f"challenges{time('%Y')}.yaml"
-        self.data = []
+        self.challenge_entries = {}
         try:
             with open(self.file,'r') as f:
-                self.data = yaml.load(f, Loader=yaml.FullLoader)
-                if self.data is None: self.data = []
+                self.challenge_entries = yaml.load(f, Loader=yaml.FullLoader)
+                if not self.challenge_entries: self.challenge_entries = {}
             logging.info(f"Loaded {self.file}")
+        except FileNotFoundError:
+            logging.info(f"Creating {self.file}")
         finally:
-            self.update_challenges()
-    
+            if not offline:
+                self.update_challenges()
+                
     def __getitem__(self, key):
-        if isinstance(key, str):
-            return [ch for ch in self.data if key in ch['title']][0]
-        return self.data[key]
+        return self.challenge_entries[key]
     
-    def __setitem__(self, key, value):
-        self.data[key] = value
-        self.save()
+    def __iter__(self):
+        return iter(self.challenge_entries.values())
     
     def save(self):
         with open(self.file, 'w') as f:
-            yaml.dump(self.data, f, default_flow_style=False)
+            yaml.dump(self.challenge_entries, f, default_flow_style=False)
 
-    def __iter__(self):
-        return iter(self.data)
-
-    def __len__(self):
-        return len(self.data)
-
-    def append(self, item):
-        self.data.append(item)
-        self.save()
-    
-    def update_challenges(self):
+    def _get_challenge_php_table(self):
         logging.info("Requesting challenge.php")
         r = requests.get('https://www.primegrid.com/challenge/challenge.php')
         soup = BeautifulSoup(r.content, 'html.parser')
-        table = soup.find(id='table4')
-        logging.info("Parsing challenge.php")
-        rows = table.find_all('tr')
-        master_list = []
-        for tr in rows[2:-2]:
-            l = []
-            for td in list(tr)[:-1]:
-                l.append(td.text if hasattr(td, 'text') else td)
-            link = tr.find('x')
-            l.append("https://www.primegrid.com"+(link['href'] if link else '/forum_post.php?id=2'))
-            master_list.append(l)
+        self._challenge_php_table = soup.find(id='table4')
+    
+    @property
+    def challenge_php_table(self):
+        if not hasattr(self, '_challenge_php_table'):
+            self._get_challenge_php_table()
+        return self._challenge_php_table
+    
+    def update_challenges(self):
 
-        def extract_start_time(challenge):
+        def extract_start_time(date, time):
             from parse import parse
-            time_str = challenge[1] + " " + challenge[2]
+            time_str = date + " " + time
             if ((res := parse("{day:d}-{:d} {month} {hour:d}:{minute:d}:{second:d}", time_str)) is not None):
                 time_data = res.named
             else:
@@ -82,30 +70,39 @@ class yaml_boi:
             dt = datetime(1900, **time_data)
             return dt.strftime('%m/%d %H:%M')
 
-        for i, challenge in enumerate(master_list):
-            if i >= len(self): self.append({})
-            d = self[i]
-            d['number'] = int(challenge[0])
-            d['start_time'] = extract_start_time(challenge)
-            d['sp'] = []
-            for sp in subprojects:
-                if sp in challenge[3]:
-                    d['sp'].append(sp)
-            d['title'] = challenge[4]
-            d['length'] = int(challenge[5].split(' ')[0])
-            d['celebrating'] = "celebrating TODO!"
-            d['background'] = "TODO!"
-            d['thread'] = challenge[6]
-            if 'updates' not in d: logging.info(f"Initializing updates field for {d['title']}")
-            d['updates'] = {
-                'first': False,
-                'second': False,
-                'news': False,
-                'stats': False,
-                'cleanup': False,
-                'results': False
-            } if 'updates' not in d else d['updates']
-            self[i] = d
+        # main loop to get all the challenges
+        rows = self.challenge_php_table.find_all('tr')
+        for tr in rows[2:-2]:
+            entry = {}
+            tds = list(tr)[:-1]
+            link = tr.find('a')
+            entry['number'] = int(tds[0].text)
+            entry['start_time'] = extract_start_time(tds[1].text, tds[2].text)
+            entry['sp'] = [sp.text for sp in tds[3].font.contents if isinstance(sp, str)]
+            entry['title'] = tds[4].text
+            entry['length'] = int(tds[5].text.split(' ')[0])
+            entry['thread'] = "https://www.primegrid.com"+(link['href'] if link else '/forum_post.php?id=2')
+
+            if entry['number'] not in self.challenge_entries:
+                logging.info(f"Adding {entry['title']} to {self.file}")
+                self.challenge_entries[entry['number']] = entry
+            else:
+                self.challenge_entries[entry['number']].update(entry)
+                
+            if 'updates' not in self.challenge_entries[entry['number']]:
+                self.challenge_entries[entry['number']]['updates'] = {
+                    'first': False,
+                    'second': False,
+                    'news': False,
+                    'stats': False,
+                    'cleanup': False,
+                    'results': False
+                }
+            if 'celebrating' not in self.challenge_entries[entry['number']]:
+                self.challenge_entries[entry['number']]['celebrating'] = 'celebrating TODO!'
+            if 'background' not in self.challenge_entries[entry['number']]:
+                self.challenge_entries[entry['number']]['background'] = 'TODO!'
+        self.save()
 
     def get_needed_updates(self):
         logging.info("Getting needed updates")
@@ -137,7 +134,7 @@ class yaml_boi:
             t = challenge_timeline(challenge)
             for u, s in challenge['updates'].items():
                 if s == False and now > t[u]:
-                    ups[u].append(challenge['title'])
+                    ups[u].append(challenge['number'])
                     logging.info(f"Need to do {u} for {challenge['title']}")
 
         return ups
@@ -215,7 +212,7 @@ class Challenge:
             
 
     def __init__(self, title, number, length, celebrating, sp, start_time, background, thread=None, **kwargs):
-        self.title = title if "'s" in title else "the "+title
+        self.title = title if "'s" in title or title.startswith("A") else "the "+title
         self.number_int = number
         self.number = self.ths[number]
         self.length = length
@@ -244,7 +241,7 @@ class Challenge:
         self._teams_page = soup
     
     def _get_primes_page(self):
-        # TODO: add primepage abbreviation field to subproject dict
+        # TODO: add parsing for this
         url = f'https://www.primegrid.com/primes/primes.php?project={self.sp.abbrv}'
 
     @property
@@ -309,13 +306,13 @@ class Challenge:
 def main(init=False,template="",outfile=None,posts=[],**kwargs):
     if init:
         logging.info(f"Initializing new challenge yaml file: {outfile}")
-        y = yaml_boi(file=outfile)
+        y = yaml_boi(file=outfile, offline=True)
         exit()
     if template:
-        y = yaml_boi()
+        y = yaml_boi(offline=True)
         c = Challenge(**y[template])
     if not outfile:
-        outfile = template.split('.')[0] + '.txt'
+        outfile = c.title.split('.')[0] + '.txt'
     mtl = MakoTemplateLookup(directories=["", "project_overviews/", "templates/"])
     
     outputs = []

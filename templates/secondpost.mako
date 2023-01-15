@@ -17,7 +17,7 @@ The ${c.number} challenge of the [url=https://www.primegrid.com/challenge/challe
 
 ${c.background}
 
-To participate in the Challenge, please select only the [u][b]${listem(c.sp,'long_name')}[/b][/u] project${c.s()} in your [b][url=http://www.primegrid.com/prefs.php?subset=project]PrimeGrid preferences[/url][/b] section.
+To participate in the Challenge, please select only the [u][b]${listem(c.sp,'full_name')}[/b][/u] project${c.s()} in your [b][url=http://www.primegrid.com/prefs.php?subset=project]PrimeGrid preferences[/url][/b] section.
 
 ################################## BEGIN TASK NOTICES
 %if any(sp.deadline > c.length for sp in c.sp):
