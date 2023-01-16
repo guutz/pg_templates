@@ -198,18 +198,15 @@ class Challenge:
             self._prefs_page = soup
         
         def get_time(self, type=CPU):
+            from parse import search
             if not hasattr(self, '_prefs_page'):
                 self._get_prefs_page()
             notes = self._prefs_page.find_all("div", class_="note")
-            timestr = ''
             for note in notes:
-                project = note.parent.find("a")
-                if project and self.name in project.text:
-                    timestr = note.find(string=lambda text: text and f"Recent average {type} time" in text)
-            if timestr:
-                return timestr.strip()[len(f"Recent average {type} time: "):]
+                if self.full_name in note.parent.text:
+                    res = search(f"Recent average {type} time: "+"{hours:d}:{minutes:d}:{seconds:d}", note.text)
+                    return f"{res['hours']}:{res['minutes']}:{res['seconds']}"
             return None
-            
 
     def __init__(self, title, number, length, celebrating, sp, start_time, background, thread=None, **kwargs):
         self.title = title if "'s" in title or title.startswith("A") else "the "+title

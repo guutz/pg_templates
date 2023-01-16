@@ -1,32 +1,21 @@
 <%page args="sp_list"/>\
-[u][b]Application Builds[/b][/u]
+[b]Supported platforms for GFN tasks:[/b][list]
+*Windows: CPU¹: x86, x64. GPU²: Nvidia, AMD, Intel ARC.
+*Linux: CPU¹: x86, x64, ARM64. GPU²: Nvidia, AMD, Intel ARC.
+*Mac: CPU¹: x64, ARM64. GPU2: Nvidia, AMD, Apple M-Series.
+*For CPU tasks, multi-threading is supported and IS recommended. Click [url=https://www.primegrid.com/prefs_edit.php?subset=project#mt]here[/url] to set the maximum number of threads.
+*For GFN-21 CPU and GFN-22 CPU tasks, multi-threading is turned on automatically. A minimum of 4 CPU logical cores are required.
+*Except for GFN-15, all GFN use fast proof tasks so no double check tasks are needed. Everyone is "first"!
 
-[list][color=red][b]IMPORTANT: Overclocking -- including factory overclocking -- on Nvidia GPUs [u]is very strongly discouraged[/u]. Even if your GPU can run other tasks without difficulty, it may be unable to run GFN tasks when overclocked.[/b][/color]
-
+¹ CPU tasks are not available for GFN-15 (n=32768) or "Do You Feel Lucky?".
+² OpenCL 1.1 or higher is required.[/list]
 % for sp in sp_list:
-Supported platforms for [b]${sp.short_name}[/b]:
-*Windows: Nvidia GPU (OpenCL): 32 bit, AMD/ATI GPU (OpenCL): 32 bit${', CPU: 64 bit, 32 bit' if sp.cpu_time else ''}
-*Linux: Nvidia GPU (OpenCL): 32 bit, 64 bit, AMD/ATI GPU (OpenCL): 32 bit, 64 bit${', CPU: 64 bit, 32 bit' if sp.cpu_time else ''}
-*Mac: Nvidia GPU (OpenCL): 64 bit, AMD/ATI GPU (OpenCL): 64 bit${', CPU: 64 bit, 32 bit' if sp.cpu_time else ''}
-[/list]
-% endfor
-
-[u][b]A Cautionary Reminder[/b][/u]
-
-[list][color=red][b]ATTENTION: The primality programs Genefer (for CPUs) and GeneferOCL (for GPUs) are computationally intensive; so, it is vital to have a stable system with good cooling. It does not tolerate "even the slightest of errors." Please see [url=http://www.primegrid.com/forum_thread.php?id=857&nowrap=true#8317]this post[/url] for more details on how you can "stress test" your CPU, and please see [url=http://www.primegrid.com/forum_thread.php?id=4148]this post[/url] for tips on running GFN on your GPU successfully.
-
-[u]As with all number crunching, excessive heat can potentially cause permanent hardware failure. Please ensure your cooling system is sufficient.[/u]
-
-% for sp in sp_list:
+% if 'GFN' in sp.short_name:
 ${sp.short_name} WU's are currently averaging \
 % if sp.cpu_time:
 ${sp.cpu_time} on CPU and \
 % endif
 ${sp.gpu_time} on GPU.
 For a general idea of how your GPU stacks up, you can have a look at the [url=http://www.primegrid.com/gpu_list.php]fastest GPUs list[/url].
+% endif
 % endfor
-
-If your CPU is highly overclocked, please consider "stress testing" it. Overclocking your GPU is not recommended at all for GeneferCUDA. Sieving is an excellent alternative for computers that are not able to run Genefer. :)
-
-Please, please, please make sure your machines are up to the task.[/b][/color]
-[/list]

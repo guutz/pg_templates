@@ -62,7 +62,7 @@ GFN-15:
   deadline: 4
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=15)
+  full_name: Generalized Fermat Prime Search n=15
   multithread: 'no'
   short_name: GFN-15
   abbrv: GFN32768
@@ -71,7 +71,7 @@ GFN-16:
   deadline: 4
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=16)
+  full_name: Generalized Fermat Prime Search n=16
   multithread: 'yes'
   short_name: GFN-16
   abbrv: GFN65536
@@ -80,7 +80,7 @@ GFN-17-MEGA: &GFN-17
   deadline: 4
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=17)
+  full_name: Generalized Fermat Prime Search n=17
   multithread: 'yes'
   short_name: GFN-17 MEGA
   abbrv: GFN131072
@@ -90,7 +90,7 @@ GFN-18:
   deadline: 4
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=18)
+  full_name: Generalized Fermat Prime Search n=18
   multithread: 'yes'
   short_name: GFN-18
   abbrv: GFN262144
@@ -99,7 +99,7 @@ GFN-19:
   deadline: 10
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=19)
+  full_name: Generalized Fermat Prime Search n=19
   multithread: 'yes'
   short_name: GFN-19
   abbrv: GFN524288
@@ -108,7 +108,7 @@ GFN-20:
   deadline: 15
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=20)
+  full_name: Generalized Fermat Prime Search n=20
   multithread: 'yes'
   short_name: GFN-20
   abbrv: GFN1048576
@@ -117,7 +117,7 @@ GFN-21:
   deadline: 21
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=21)
+  full_name: Generalized Fermat Prime Search n=21
   multithread: yes_app
   short_name: GFN-21
   abbrv: GFN
@@ -126,7 +126,7 @@ GFN-22:
   deadline: 21
   llr: false
   llr2: false
-  full_name: Generalized Fermat Prime Search (n=22)
+  full_name: Generalized Fermat Prime Search n=22
   multithread: 'no'
   short_name: GFN-22
   abbrv: GFN
