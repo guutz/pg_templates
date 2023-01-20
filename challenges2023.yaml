@@ -7,12 +7,12 @@
   - PPS-MEGA
   - GFN-17-MEGA
   start_time: 01/22 12:00
-  thread: https://www.primegrid.com/forum_post.php?id=2
+  thread: https://www.primegrid.com/forum_thread.php?id=10115
   title: A Prime Chinese New Year Challenge
   updates:
     cleanup: false
     first: false
-    news: false
+    news: true
     results: false
     second: true
     stats: false
