@@ -10,7 +10,7 @@
   thread: https://www.primegrid.com/forum_thread.php?id=10115
   title: A Prime Chinese New Year Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: false
     news: true
     results: false
