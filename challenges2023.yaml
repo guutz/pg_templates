@@ -29,7 +29,7 @@
   updates:
     cleanup: false
     first: false
-    news: false
+    news: true
     results: false
     second: true
     stats: false
