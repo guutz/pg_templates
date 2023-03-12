@@ -32,7 +32,7 @@
     news: true
     results: false
     second: true
-    stats: false
+    stats: true
 3:
   background: TODO!
   celebrating: celebrating TODO!
