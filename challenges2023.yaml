@@ -27,10 +27,10 @@
   thread: https://www.primegrid.com/forum_thread.php?id=10168
   title: International Women's Day Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: false
     news: true
-    results: false
+    results: true
     second: true
     stats: true
 3:
