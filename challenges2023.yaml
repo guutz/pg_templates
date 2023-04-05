@@ -48,7 +48,7 @@
     first: false
     news: false
     results: false
-    second: false
+    second: true
     stats: false
 4:
   background: TODO!
