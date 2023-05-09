@@ -44,10 +44,10 @@
   thread: https://www.primegrid.com/forum_thread.php?id=10202
   title: Gotthold Eisenstein's Birthday Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: false
     news: true
-    results: false
+    results: true
     second: true
     stats: false
 4:
