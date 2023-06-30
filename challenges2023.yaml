@@ -61,10 +61,10 @@
   thread: https://www.primegrid.com/forum_thread.php?id=10261
   title: Blaise Pascal's 400th Birthday Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: false
     news: true
-    results: false
+    results: true
     second: true
     stats: false
 5:
@@ -75,7 +75,7 @@
   sp:
   - CW-Sieve
   start_time: 07/08 21:00
-  thread: https://www.primegrid.com/forum_post.php?id=2
+  thread: https://www.primegrid.com/forum_thread.php?id=10277
   title: Math 2.0 Day Challenge
   updates:
     cleanup: false
