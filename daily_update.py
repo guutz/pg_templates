@@ -18,7 +18,7 @@ email_contents=[]
 try:
     for u, chs in y.get_needed_updates().items():
         for ch in chs:
-            if u == 'stats':
+            if u == 'stats' and not y[ch]['updates']['cleanup']:
                 logging.info(f" {u} update for {ch}")
                 with open(f"{time('%Y-%m-%d')}.txt", 'a') as f:
                     i = info(update=True, name=y[ch]['title'].split(" ")[0])
