@@ -52,7 +52,7 @@ except Exception as e:
 mail="""<html><body>#######################################\n\n"""
 if email_contents:
     for i in email_contents:
-        mail+=f'<pre contenteditable="true">{i}</pre>'
+        mail+=f'<pre contenteditable="true">{str(i)}</pre>'
         mail+='\n#######################################\n\n'
     if mail.count('TODO!') > 0:
         mail = "SOME STUFF NEEDS TO BE FILLED IN HERE FIRST!\n\n#######################################\n\n" + mail
