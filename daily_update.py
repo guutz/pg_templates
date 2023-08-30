@@ -49,13 +49,14 @@ except Exception as e:
     logging.error(traceback.format_exc())
     email_contents.append(f"WOOPS! {e}\n\n{traceback.format_exc()}")
 
-mail="""#######################################\n\n"""
+mail="""<html><body>#######################################\n\n"""
 if email_contents:
     for i in email_contents:
-        mail+=str(i)
+        mail+=f'<pre contenteditable="true">{i}</pre>'
         mail+='\n#######################################\n\n'
     if mail.count('TODO!') > 0:
         mail = "SOME STUFF NEEDS TO BE FILLED IN HERE FIRST!\n\n#######################################\n\n" + mail
+    mail+="</body></html>"
 else:
     mail = "There's nothing here!"
 
