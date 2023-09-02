@@ -116,7 +116,7 @@
     first: false
     news: false
     results: false
-    second: false
+    second: true
     stats: false
 8:
   background: TODO!
