@@ -95,10 +95,10 @@
   thread: https://www.primegrid.com/forum_thread.php?id=10310
   title: Chant at the Moon Day Challenge
   updates:
-    cleanup: false
+    cleanup: true
     first: false
     news: true
-    results: false
+    results: true
     second: true
     stats: false
 7:
