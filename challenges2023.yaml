@@ -100,7 +100,7 @@
     news: true
     results: true
     second: true
-    stats: false
+    stats: true
 7:
   background: TODO!
   celebrating: celebrating TODO!
