@@ -115,7 +115,7 @@
     cleanup: true
     first: false
     news: true
-    results: true
+    results: false
     second: true
     stats: true
 8:
@@ -133,7 +133,7 @@
     first: false
     news: false
     results: false
-    second: true
+    second: false
     stats: false
 9:
   background: TODO!
