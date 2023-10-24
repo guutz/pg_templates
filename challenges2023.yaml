@@ -126,8 +126,8 @@
   sp:
   - ESP
   start_time: 10/31 13:00
-  thread: https://www.primegrid.com/forum_post.php?id=2
-  title: Christmas Challenge
+  thread: https://www.primegrid.com/forum_thread.php?id=10370
+  title: '"Christmas" Challenge'
   updates:
     cleanup: false
     first: false
