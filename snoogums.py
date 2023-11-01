@@ -23,7 +23,7 @@ if papers:
             contents=f"""Guys this is huge! Astrophysicists just discovered {title}!!!
             
             {link}
-            {published_datetime[:20]}
+            {str(published_datetime)[:20]}
             {abstract}""",
         )
 else:
