@@ -9,7 +9,7 @@ except ImportError:
 papers = arxiv.Search(query="cat:astro-ph", sort_by=arxiv.SortCriterion.SubmittedDate, sort_order="descending", max_results=1)
 
 if papers:
-    latest_paper = next(arxiv.Client().results(search))
+    latest_paper = next(arxiv.Client().results(papers))
     title = latest_paper.title
     published_datetime = latest_paper.published
     link = latest_paper.pdf_url
