@@ -6,14 +6,14 @@ except ImportError:
     yagmail_auth = "yagmail_auth.json"
 
 # Search for the latest paper in the "astro-ph" category (Astrophysics).
-papers = arxiv.query(query="cat:astro-ph", sort_by="submitted", sort_order="descending", max_results=1)
+papers = arxiv.Search(query="cat:astro-ph", sort_by=arxiv.SortCriterion.SubmittedDate, sort_order="descending", max_results=1)
 
 if papers:
-    latest_paper = papers[0]
-    title = latest_paper['title']
-    published_datetime = latest_paper['published']
-    link = latest_paper['pdf_url']
-    abstract = latest_paper['summary']
+    latest_paper = next(arxiv.Client().results(search))
+    title = latest_paper.title
+    published_datetime = latest_paper.published
+    link = latest_paper.pdf_url
+    abstract = latest_paper.summary
     print("Title of the latest arXiv astrophysics paper:")
     print(title)
     with yagmail.SMTP("magpie31415@gmail.com", oauth2_file=yagmail_auth) as yag:
