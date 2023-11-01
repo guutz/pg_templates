@@ -6,7 +6,7 @@ except ImportError:
     yagmail_auth = "yagmail_auth.json"
 
 # Search for the latest paper in the "astro-ph" category (Astrophysics).
-papers = arxiv.Search(query="cat:astro-ph", sort_by=arxiv.SortCriterion.SubmittedDate, sort_order=arxiv.SortOrder.Descending, max_results=1)
+papers = arxiv.Search(query="cat:astro-ph", sort_by=arxiv.SortCriterion.SubmittedDate, sort_order=arxiv.SortOrder.Ascending, max_results=10)
 
 if papers:
     latest_paper = next(arxiv.Client().results(papers))
@@ -22,8 +22,8 @@ if papers:
             subject=title,
             contents=f"""Guys this is huge! Astrophysicists just discovered {title}!!!
             
-            ---------------------------------------------------------------------------
-            {published_datetime}
+            {link}
+            {published_datetime[:20]}
             {abstract}""",
         )
 else:
