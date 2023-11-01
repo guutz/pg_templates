@@ -1,7 +1,7 @@
 name: snoogums
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
     
 jobs:
@@ -19,6 +19,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install yagmail
+          pip install arxiv
       - name: Fetch Secrets and Run snoogums.py
         env:
           GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
