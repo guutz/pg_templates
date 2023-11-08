@@ -43,7 +43,7 @@ def arxiv_email():
         print("No astrophysics papers found")
 
 def another_revolution_email():
-    with open("Another Revolution.txt", "r") as f:
+    with open("Another Revolution.txt", "r", encoding="ascii", errors="ignore") as f:
         contents = f.readlines()
     
     # find a random line that starts with either "KAT" or "HENRY" (case sensitive)
