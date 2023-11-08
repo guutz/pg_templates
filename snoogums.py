@@ -53,7 +53,7 @@ def another_revolution_email():
 
     line_index = contents.index(line)
 
-    line_plus_first_word = "".join(line.split(" ", 4)[:-1])
+    line_plus_first_word = " ".join(line.split(" ", 4)[:-1])
 
     with yagmail.SMTP("magpie31415@gmail.com", oauth2_file=yagmail_auth) as yag:
         yag.send(
