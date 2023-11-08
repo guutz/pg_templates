@@ -79,7 +79,7 @@ Kat and Henry, two graduate students (one a botanist from a working-class family
 
 if __name__ == "__main__":
     # another revolution email if date is before 11/10/2023 4:30pm UTC-8
-    if datetime.now() < datetime(2023, 11, 10, 16, 30, tzinfo=tz.gettz("US/Pacific")):
+    if datetime.now().astimezone(tz.gettz("America/Los_Angeles")) < datetime(2023, 11, 10, 16, 30, 0, tzinfo=tz.gettz("America/Los_Angeles")):
         another_revolution_email()
     else:    
         arxiv_email()
