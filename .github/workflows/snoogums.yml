@@ -20,7 +20,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install yagmail
           pip install arxiv
-          pip install dateutil
+          pip install python-dateutil
       - name: Fetch Secrets and Run snoogums.py
         env:
           GMAIL_SECRET: ${{ secrets.GMAIL_SECRET }}
