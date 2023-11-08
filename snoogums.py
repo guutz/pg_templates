@@ -2,6 +2,7 @@ import yagmail
 import arxiv
 import random
 from datetime import datetime
+from dateutil import tz
 try:
     from auth import yagmail_auth
 except ImportError:
@@ -77,8 +78,8 @@ Kat and Henry, two graduate students (one a botanist from a working-class family
         )
 
 if __name__ == "__main__":
-    # another revolution email if date is before 11/10/2023 4:30pm pacific time
-    if datetime.now() < datetime(2023, 11, 10, 16, 30, tzinfo=datetime.timezone(datetime.timedelta(hours=-8))):
+    # another revolution email if date is before 11/10/2023 4:30pm UTC-8
+    if datetime.now() < datetime(2023, 11, 10, 16, 30, tzinfo=tz.gettz("US/Pacific")):
         another_revolution_email()
     else:    
         arxiv_email()
