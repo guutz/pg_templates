@@ -129,10 +129,10 @@
   thread: https://www.primegrid.com/forum_thread.php?id=10370
   title: '"Christmas" Challenge'
   updates:
-    cleanup: false
+    cleanup: true
     first: false
     news: true
-    results: false
+    results: true
     second: true
     stats: false
 9:
