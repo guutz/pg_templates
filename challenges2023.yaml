@@ -134,7 +134,7 @@
     news: true
     results: true
     second: true
-    stats: false
+    stats: true
 9:
   background: TODO!
   celebrating: celebrating TODO!
@@ -152,5 +152,5 @@
     first: false
     news: false
     results: false
-    second: true
+    second: false
     stats: false
