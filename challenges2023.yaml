@@ -152,5 +152,5 @@
     first: false
     news: false
     results: false
-    second: true
+    second: false
     stats: false
