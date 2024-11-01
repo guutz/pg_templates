@@ -164,7 +164,8 @@ Kat and Henry, two graduate students (one a botanist from a working-class family
 
 def tech_email():
     d = feedparser.parse("https://campuspubs.library.caltech.edu/cgi/exportview/publication/California_Tech/California_Tech/RSS2/California_Tech_California_Tech.xml")
-    index = len(d['entries']) - get_index() - 1
+    index_current = len(d['entries']) - get_index() - 1
+    index = min(index_current, read_index())
     title = d['entries'][index]['title']
     libpage = requests.get(d['entries'][index]['id'])
     if libpage.status_code == 200:
@@ -199,6 +200,7 @@ def tech_email():
                     yagmail.inline("first_page.png")
                 ]
             )
+        increment_index()
 
 def get_index():
     pacific_tz = tz.gettz('America/Los_Angeles')
@@ -210,6 +212,17 @@ def get_index():
     i = time_difference.total_seconds() // (20 * 60)
     assert i >= 0, "It is not November yet"
     return int(i)
+
+def read_index():
+    try:
+        with open("index.txt", "r") as f:
+            return int(f.read())
+    except FileNotFoundError:
+        return 0
+    
+def increment_index():
+    with open("index.txt", "a") as f:
+        f.write(str(read_index() + 1))
 
 def error_email(e):
     with yagmail.SMTP("magpie31415@gmail.com", oauth2_file=yagmail_auth) as yag:
