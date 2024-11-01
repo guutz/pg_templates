@@ -70,9 +70,29 @@ clase = [
     "lemmings",
     "squirrel hunters",
     "adequates",
-    ""
+    "mateys",
+    "yookeroos",
+    "amigos",
+    "compadres",
+    "sussy frosh",
+    "impostors",
+    "delightful individuals",
+    "smelly meat sacks",
+    "sentients",
+    "fellow space travelers",
+    "friends (and might i just say, you're looking particularly crunchy today)",
+    "fellow knowledge seekers",
+    "fellow kids",
+    "queers",
+    "queef biscuits",
+    "you ragtag gang of whippersnappers",
+    "youths",
+    "sociopaths",
+    "schizophrenics",
+    "fellow neurotypical individuals",
+    "besties",
 ]
-clase = random.shuffle(clase)
+random.shuffle(clase)
 
 # def arxiv_email():
 #     # Search for the latest paper in the "astro-ph" category (Astrophysics).
